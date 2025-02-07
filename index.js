@@ -3,8 +3,10 @@
 const formInput = document.querySelector("#form_input");
 let inputText = false;
 const submitButton = document.querySelector("#submit-button");
-
-
+let tasksArray = JSON.parse(localStorage.getItem("taskArray")) || [];
+ //para que se vuelvan a imprimir las tareas que ya están guardadas en el localStorage, volver a convertir los strings en json y llamar a la función de craeteTaskNode
+ //devuelve el array con los objetos que representan las listas guardadas en el localStorage
+tasksArray.forEach((task) =>{console.log(task); createTaskNode(task, false)});
 
 //función que permite obtener un número aleatorio en un rango específico
 function getRandomInt(min, max) {
@@ -15,11 +17,12 @@ function getRandomInt(min, max) {
 
 //función que genera un objeto con una tarea aleatoria, la aleatoriedad la obtiene de la función getRandomInt()
 function generateRandomTask() { //genera un objeto con una tarea aleatoria 
-  return {
+  return JSON.stringify({ //convertimos a JSON para que pueda leerlo
     text: `Texto aleatorio número ${getRandomInt(1, 1000)}`,
     isCompleted: getRandomInt(0, 1) === 1, //isCompleted será true o false dependiendo del numero aleatorio
-    isFav: getRandomInt(0, 1) === 1
-  };
+    isFav: getRandomInt(0, 1) === 1,
+    id: Date.now()
+  });
 }
 
 //función que genera un array con 10 objetos random que representan tareas random, usa un bucle for para llamar 10 veces a la función getRandomTask
@@ -60,6 +63,7 @@ function regenerateArray() {
       });
     }); */
   }
+
 
   //función que genera elementos(tasks), si addToEnd es true entonces lo añade al final, si es false lo añade al principio
 function createTaskNode(task, addToEnd){
@@ -177,12 +181,15 @@ function createTaskNode(task, addToEnd){
 function addTask(addToEnd, taskText = null){
 let task
   if(inputText === true){
-    task = { text: taskText, isCompleted: false, isFav: false }; //creamos un objeto igual al que se generaría de forma random si no rellenaramos el form
+    task = { text: taskText, isCompleted: false, isFav: false, id: Date.now() }; //creamos un objeto igual al que se generaría de forma random si no rellenaramos el form
     
   } else {
   task = generateRandomTask();
-    } 
+    }
+    tasksArray.push(task); //Se añaden los objetos al array en formato json
+    localStorage.setItem("taskArray", JSON.stringify(tasksArray) ); //se actualiza el valor asociado a la key "taskArray", cada vez se añadirá un nuevo objeto que representa una tarea
   createTaskNode(task, addToEnd); //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final 
+
 }
 
 function addLast() {}
