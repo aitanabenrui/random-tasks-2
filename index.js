@@ -3,7 +3,7 @@
 const formInput = document.querySelector("#form_input");
 let inputText = false;
 const submitButton = document.querySelector("#submit-button");
-let tasksArray = JSON.parse(localStorage.getItem("taskArray")) || [];
+let tasksArray = JSON.parse(localStorage.getItem("taskArray")) || []; //si tiene datos localStorage se crea el array, si no genera un array vacío.
  //para que se vuelvan a imprimir las tareas que ya están guardadas en el localStorage, volver a convertir los strings en json y llamar a la función de craeteTaskNode
  //devuelve el array con los objetos que representan las listas guardadas en el localStorage
 tasksArray.forEach((task) =>{console.log(task); createTaskNode(task, false)});
