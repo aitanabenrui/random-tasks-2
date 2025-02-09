@@ -121,9 +121,9 @@ function createTaskNode(task, addToEnd){
 
 function addTask(addToEnd, taskText = null){
 
-  let task;
+  let task; //definimos la variable task
 
-  if(taskText && taskText.length > 0){
+  if(taskText && taskText.length > 0){ //la comparación anterior (if(inputText !== taskText){) no servía porque nunca cambiabamos el valor de inputText que siempre sería falso.
     task = { text: taskText, isCompleted: false, isFav: false, id: Date.now() }; //creamos un objeto igual al que se generaría de forma random si no rellenaramos el form
   } else {
   task = generateRandomTask(); //esto se meterá en el array taskArray por lo que también habrá que hacer stringify
