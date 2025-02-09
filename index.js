@@ -113,7 +113,7 @@ function createTaskNode(task, addToEnd){
         event.stopPropagation(); //con stopPropagation evitemos que al marcarn la tarea como favorita no marquemos la tarea como completada o pendiente, evitamos la propagación al contenedor padre
         const isCurrentlyFav = favButtonNode.classList.contains('fav');
         favButtonNode.classList.toggle('fav'); //se usa para añadir o eliminar de forma dinámica una clase de un elemento. Si el elemneto no tiene la clase se la añade, si ya la tiene se la quita
-        favButtonNode.innerText = isCurrentlyFav ? '💢' : '❤'
+        favButtonNode.innerText = isCurrentlyFav ? '✖' : '❤'
       })
 }
 
