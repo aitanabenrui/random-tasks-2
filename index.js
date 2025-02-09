@@ -108,8 +108,16 @@ function createTaskNode(task, addToEnd){
       taskNode.addEventListener('click', function () {
         const taskTextNode = taskNode.querySelector('span');
         const isCurrentlyCompleted = taskTextNode.classList.contains('completed');
+
+        // Alterna estado en la UI
         taskTextNode.classList.toggle('completed');
         taskNode.querySelector('.status').innerText = isCurrentlyCompleted ? 'pending' : 'completed';
+      
+        // Actualizar en el array de tareas
+        task.isCompleted = !isCurrentlyCompleted;
+
+         // Guardar en localStorage: actualiza el estado de la tarea
+        localStorage.setItem("taskArray", JSON.stringify(tasksArray));
       });
 
       //event listener para cambiar el estado del icono
@@ -180,7 +188,7 @@ function createTaskNode(task, addToEnd){
 
 function addTask(addToEnd, taskText = null){
 let task;
-  if(inputText === true){
+  if(inputText !== taskText){
     task = { text: taskText, isCompleted: false, isFav: false, id: Date.now() }; //creamos un objeto igual al que se generaría de forma random si no rellenaramos el form
   } else {
   task = generateRandomTask(); //esto se meterá en el array taskArray por lo que también habrá que hacer stringify
@@ -244,7 +252,6 @@ document.querySelector('#add-last').addEventListener('click', () => {
 document.querySelector('#create-task').addEventListener('submit', (event)=>{
   event.preventDefault();   //todos los formularios recargan la página, con esto lo evitamos
   console.log(event);
-  inputText = true
 
   //buena practica poner un name en los formularios para poder guardarlos
   const formData = new FormData(event.target); //form data es un objeto espcial
