@@ -99,7 +99,7 @@ function createTaskNode(task, addToEnd){
         taskTextNode.classList.toggle('completed');
         taskNode.querySelector('.status').innerText = isCurrentlyCompleted ? 'pending' : 'completed';
       
-        // Actualizar en el array de tareas: Cada vez que se marca una tarea como completada o pendiente, se actualiza tasksArray y localStorage.
+        // Actualizar en el array de tareas: Guarda el nuevo estado de la tarea en la variable task. accede al objeto y le cambia el valor de la propiedad isCompleted
         task.isCompleted = !isCurrentlyCompleted;
 
          // Guardar en localStorage: actualiza el estado de la tarea
