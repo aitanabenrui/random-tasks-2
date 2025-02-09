@@ -17,7 +17,7 @@ function getRandomInt(min, max) {
 
 //función que genera un objeto con una tarea aleatoria, la aleatoriedad la obtiene de la función getRandomInt()
 function generateRandomTask() { //genera un objeto con una tarea aleatoria 
-  return { //convertimos a JSON para que pueda leerlo
+  return { 
     text: `Texto aleatorio número ${getRandomInt(1, 1000)}`,
     isCompleted: getRandomInt(0, 1) === 1, //isCompleted será true o false dependiendo del numero aleatorio
     isFav: getRandomInt(0, 1) === 1,
@@ -123,7 +123,7 @@ function addTask(addToEnd, taskText = null){
 
   let task;
 
-  if(inputText !== taskText){
+  if(taskText && taskText.length > 0){
     task = { text: taskText, isCompleted: false, isFav: false, id: Date.now() }; //creamos un objeto igual al que se generaría de forma random si no rellenaramos el form
   } else {
   task = generateRandomTask(); //esto se meterá en el array taskArray por lo que también habrá que hacer stringify
