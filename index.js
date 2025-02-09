@@ -113,19 +113,23 @@ function createTaskNode(task, addToEnd){
         event.stopPropagation(); //con stopPropagation evitemos que al marcarn la tarea como favorita no marquemos la tarea como completada o pendiente, evitamos la propagación al contenedor padre
         const isCurrentlyFav = favButtonNode.classList.contains('fav');
         favButtonNode.classList.toggle('fav'); //se usa para añadir o eliminar de forma dinámica una clase de un elemento. Si el elemneto no tiene la clase se la añade, si ya la tiene se la quita
-        favButtonNode.innerText = isCurrentlyFav ? '✖' : '❤'
+        favButtonNode.innerText = isCurrentlyFav ? '✖' : '❤';
+        task.isFav = !isCurrentlyFav;
+        localStorage.setItem("taskArray", JSON.stringify(tasksArray));
       })
 }
 
 function addTask(addToEnd, taskText = null){
-let task;
+
+  let task;
+
   if(inputText !== taskText){
     task = { text: taskText, isCompleted: false, isFav: false, id: Date.now() }; //creamos un objeto igual al que se generaría de forma random si no rellenaramos el form
   } else {
   task = generateRandomTask(); //esto se meterá en el array taskArray por lo que también habrá que hacer stringify
-    }
-    tasksArray.push(task); //Se añaden los objetos al array en formato json
-    localStorage.setItem("taskArray", JSON.stringify(tasksArray) ); //se actualiza el valor asociado a la key "taskArray", cada vez se añadirá un nuevo objeto que representa una tarea
+  }
+  tasksArray.push(task); //Se añaden los objetos al array en formato json
+  localStorage.setItem("taskArray", JSON.stringify(tasksArray) ); //se actualiza el valor asociado a la key "taskArray", cada vez se añadirá un nuevo objeto que representa una tarea
   createTaskNode(task, addToEnd); //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final 
 }
 
@@ -152,6 +156,7 @@ document.querySelector('#create-task').addEventListener('submit', (event)=>{
   const formData = new FormData(event.target); //form data es un objeto espcial
   const taskText = formData.get('taskText').trim(); //accede al texto del submit
   console.log(taskText);
+  
   if(taskText.length > 0){ //va a comporbar que si o si tenga texto
     addTask(false, taskText);
     console.log("botón deshabilitado");
