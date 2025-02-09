@@ -34,13 +34,6 @@ function getRandomArray() {
   return randomTasks; //devuelve el array de objetos
 }
 
-/* function getTaskHtml(task){
-  return `<div class="task"> 
-        <span class="${task.isCompleted ? 'completed' : ''}">${task.text}</span> -
-        <span class="status">${task.isCompleted ? 'completed' : 'pending'}</span>
-      </div>`;
-}
- */
 // Estas funciones serán las que iremos cambiando con los ejemplos
 //función que regenera el array de tareas random, se activa pulsando el botón de regenerar listado
 function regenerateArray() {
@@ -53,15 +46,8 @@ function regenerateArray() {
 //para cada tarea en el array, llama a la función createTaskNode
   tasks.forEach((task) => { 
     //newTasksHTML += getTaskHtml(task);
-    createTaskNode(task, true);
-  });
-// document.querySelector('#tasks').innerHTML = newTasksHTML; //mete el resultado final en tasks, un div con el id tasks
-
-  /* document.querySelectorAll('.task').forEach((buttonNode) => { //seleccióna todos los botones con la clase like
-    buttonNode.addEventListener('click', function (){
-      console.log('hola');
-      });
-    }); */
+      createTaskNode(task, true);
+    });
   }
 
 
@@ -88,14 +74,14 @@ function createTaskNode(task, addToEnd){
   //animación para que se vea el emoji al pasar el mouse-------------------------------------------------------------------------------------
 
    // Mostrar el botón cuando el mouse entra en la tarea
-  /* taskNode.addEventListener('mouseenter', () => { // () => { es lo mismo que poner function()=>{}
+  taskNode.addEventListener('mouseenter', () => { // () => { es lo mismo que poner function()=>{}
     favButtonNode.style.display = ''; //para hacer que sea visible quitándole el none 
   });
 
   // Ocultar el botón cuando el mouse sale de la tarea
   taskNode.addEventListener('mouseleave', () => {
     favButtonNode.style.display = 'none';
-  }); */
+  });
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -129,62 +115,7 @@ function createTaskNode(task, addToEnd){
         favButtonNode.classList.toggle('fav'); //se usa para añadir o eliminar de forma dinámica una clase de un elemento. Si el elemneto no tiene la clase se la añade, si ya la tiene se la quita
         favButtonNode.innerText = isCurrentlyFav ? '💢' : '❤'
       })
-
 }
-
-//EVENT PROPAGATION: las funciones se ejecutan de abajo a arriba.
-
-// function addTask(addToEnd) { //función para añadir una tarea al principio o al final. Dependiendo de si addToEnd es true o false.
-//   const task = generateRandomTask(); //definimos un objeto llamado a la función generateRandomTask
-
-// /* `<div class="task"> 
-//         <span class="${task.isCompleted ? 'completed' : ''}">${task.text}</span> -
-//         <span class="status">${task.isCompleted ? 'completed' : 'pending'}</span>
-//       </div>`; */
-
-//   const taskNode = document.createElement('div'); //ha creado un div dentro del html
-//   taskNode.className = 'task'; //añade una nueva clase al div que acabamos de crear reemplazando las clases anteriores, si se usara classList, no se podrían añadir varias clases a la vez
-
-// /*   //<span class="${task.isCompleted ? 'completed' : ''}">${task.text}</span>
-//   const completedNode = document.createElement('span'); //se crea un span
-//   completedNode.className = task.isCompleted ? 'completed' : ''; //se crea la clase del span
-//   completedNode.innerText = task.text; //es el texto que va entre la etiqueta <span>
-//   taskNode.appendChild(completedNode); //deentro del div taskNode se mete el span completedNode
-
-//       //espacio entre ambos spans
-//   const guion = document.createTextNode(' - ');
-//   taskNode.appendChild(guion);
-
-//       //<span class="status">${task.isCompleted ? 'completed' : 'pending'}</span>
-//   const statusNode = document.createElement('span'); //se crea un span con la calss status
-//   statusNode.className = 'status';
-//   statusNode.innerText = task.isCompleted ? 'completed' : 'pending'; //se le añade el texto de la etiqueta
-//   taskNode.appendChild(statusNode); //este span se añade como hijo dentro del div taskNode
-
-//  */
-// /* 
-//   //definimos una variable que meta la task definida previamente en el html
-//   const taskHtml = getTaskHtml(task); */
-
-//   taskNode.innerHTML = `<div class="task"> 
-//         <span class="${task.isCompleted ? 'completed' : ''}">${task.text}</span> -
-//         <span class="status">${task.isCompleted ? 'completed' : 'pending'}</span>
-//       </div>`;
-    
-//   const tasksNode = document.querySelector('#tasks'); //variable que contiene la parte del html que es un div con el id tasks
-  
-//   //para que se añada una tarea al principio o al final
-//   if(addToEnd){
-//     tasksNode.appendChild(taskNode); //lo añade al prinicipio de la etiqueta padre
-//   } else {
-//     tasksNode.prepend(taskNode); //para que se añada al final de la etiqueta padre
-//   };
-  
-//   //hace que solo añada el listener a ese elemento en concreto y no a todos
-//   taskNode.addEventListener('click', function (){
-//       console.log('hola', task.text);
-//       });
-//     };
 
 function addTask(addToEnd, taskText = null){
 let task;
@@ -196,43 +127,7 @@ let task;
     tasksArray.push(task); //Se añaden los objetos al array en formato json
     localStorage.setItem("taskArray", JSON.stringify(tasksArray) ); //se actualiza el valor asociado a la key "taskArray", cada vez se añadirá un nuevo objeto que representa una tarea
   createTaskNode(task, addToEnd); //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final 
-
 }
-
-function addLast() {}
-
-
-/* uso de event delegation para cambiar entre tarea completada o pendiente
-//EVENT DELEGATION-------------------------------------------------------------------
-const taskList = document.querySelector("#tasks");
-
-taskList.addEventListener('click', function(event){ 
-  // verifica que se ha hecho clic en una tarea
-  //si queremos verificar el innerHTML podemos usar:
-  // if (event.target.innerHTML.includes('task')) Cambiamos el contains por el incluides
-
-  if(event.target.classList.contains('task')){ //si donde hemos clickado (el div) tiene la clase task
-    // busca el .status dentro de la tarea clicada
-    const status = event.target.querySelector('.status');
-    
-    if (status) { // si el elemento existe
-      
-      //esta linea de código selecciona el texto "tarea random" de cada div pulsado
-      const taskTextSpan = status.previousElementSibling; //crea la variable taskTextSpan que apunta al elemento que tiene justo antes, es decir el texto de tarea random x
-      
-      if (taskTextSpan) { // verifica que exista un elemento anterior
-        if (status.innerHTML === 'completed') {
-          status.innerHTML = 'pending'; //lo cambia a pendiente
-          taskTextSpan.classList.remove('completed'); //  y quita la clase del span anterior
-        } else { //el status es pending entonces
-          status.innerHTML = 'completed'; //cambia el texto a completed
-          taskTextSpan.classList.add('completed'); // y agrega la clase al span anterior
-        }
-      }
-    }
-  }
-});
- */
 
 // event listeners para que los botones llamen a las funciones anteriores
 document.querySelector('#regenate').addEventListener('click', () => {
@@ -278,7 +173,7 @@ formInput.addEventListener('input', ()=>{
 });
 
 //formInput es la referencia al campo de entrada del formualrio el cual es un input
-//.valu es una propiedad que obtine el valor actual del campo de entrada
+//.value es una propiedad que obtine el valor actual del campo de entrada
 //si el usuario ha escrito aldo, .value devolverá ese texto, si está vacío devolvrá una cadena vacía
 
 //formInput.value.trim() === "": compara si el valor del campo de entrada (después de eliminar los espacios) es una cadena vacía ("").
