@@ -60,7 +60,7 @@ function createTaskNode(task, addToEnd){
   taskNode.innerHTML = ` 
         <span class="${task.isCompleted ? 'completed' : ''}">${task.text}</span> -
         <span class="status">${task.isCompleted ? 'completed' : 'pending'}</span>
-        <button class="emoji-btn ${task.isFav ? 'fav' : ''}" style="display:none">${task.isFav ? '❤' : '💢'}</button>`;
+        <button class="emoji-btn ${task.isFav ? 'fav' : ''}" style="display:none">${task.isFav ? '❤' : '✖'}</button>`;
     
   const tasksNode = document.querySelector('#tasks'); //variable que contiene la parte del html que es un div con el id tasks
   
