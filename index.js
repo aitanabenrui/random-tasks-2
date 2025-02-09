@@ -93,14 +93,14 @@ function createTaskNode(task, addToEnd){
       //event listener para marcar la tarea como completada si está pendiente y viceversa
       taskNode.addEventListener('click', function () {
         const taskTextNode = taskNode.querySelector('span');
-        const isCurrentlyCompleted = taskTextNode.classList.contains('completed');
+        const isCurrentlyCompleted = taskTextNode.classList.contains('completed'); //puede ser true o false dependiendo de si tiene la clase completed
 
         // Alterna estado en la UI
         taskTextNode.classList.toggle('completed');
         taskNode.querySelector('.status').innerText = isCurrentlyCompleted ? 'pending' : 'completed';
       
         // Actualizar en el array de tareas: Guarda el nuevo estado de la tarea en la variable task. accede al objeto y le cambia el valor de la propiedad isCompleted
-        task.isCompleted = !isCurrentlyCompleted;
+        task.isCompleted = !isCurrentlyCompleted; //hace la misma función que toggle. Si la tarea está completada la pasa a pendiente isCompleted:(false)
 
          // Guardar en localStorage: actualiza el estado de la tarea
         localStorage.setItem("taskArray", JSON.stringify(tasksArray));
