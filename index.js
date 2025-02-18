@@ -64,7 +64,7 @@ function createTaskNode(task, addToEnd){
     
   const tasksNode = document.querySelector('#tasks'); //variable que contiene la parte del html que es un div con el id tasks
   
-  //para que se añada una tarea al principio o al final
+  //para que se añada una tarea al principio o al final en el DOM (pero no en el array de tareas)
   if(addToEnd){ //al principio si addToEnd es true
     tasksNode.appendChild(taskNode); //lo añade al final de la etiqueta padre si hay mas elementos
   } else {
@@ -128,8 +128,17 @@ function addTask(addToEnd, taskText = null){
   } else {
   task = generateRandomTask(); //esto se meterá en el array taskArray por lo que también habrá que hacer stringify
   }
-  tasksArray.push(task); //Se añaden los objetos al array en formato json
+
+  if (addToEnd){
+    tasksArray.unshift(task); //Se añaden los objetos al final del array en formato json
+  } else {
+    tasksArray.push(task); //Se añaden los objetos al inicio del array en formato json
+  }
+  
+  //guarda el array actualizado en el localStorage
   localStorage.setItem("taskArray", JSON.stringify(tasksArray) ); //se actualiza el valor asociado a la key "taskArray", cada vez se añadirá un nuevo objeto que representa una tarea
+  
+  //Crear y mostrar la nueva tara en la interfaz
   createTaskNode(task, addToEnd); //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final 
 }
 
