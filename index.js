@@ -34,15 +34,14 @@ function getRandomArray() {
   return randomTasks; //devuelve el array de objetos
 }
 
-// Estas funciones serán las que iremos cambiando con los ejemplos
-//función que regenera el array de tareas random, se activa pulsando el botón de regenerar listado
+//función que regenera el array de tareas random, se activa pulsando el botón de regenerar listado, borra todo el array d taras y genera 10 nuevas aleaotrias 
 function regenerateArray() {
   tasksArray = getRandomArray(); // Genera un nuevo array con tareas aleatorias
   localStorage.setItem("taskArray", JSON.stringify(tasksArray)); // Guarda en localStorage
 
   document.querySelector('#tasks').innerHTML = ''; // Limpia el contenedor de tareas en el DOM
 
-  // Mostrar solo las tareas según el filtro
+  // Mostrar solo las tareas según el valor del filtro almacenado en el local storage
   const filteredTasks = filterCompleted ? tasksArray.filter(task => task.isCompleted) : tasksArray;
 
   filteredTasks.forEach((task) => {
@@ -124,12 +123,14 @@ function addTask(addToEnd, taskText = null){
 
   let task; //definimos la variable task
 
+  //se crea la tarea a partir de un texto que el usuario ha introducido o generado de forma aleatorioa con generateRandomTask()
   if(taskText && taskText.length > 0){ //la comparación anterior (if(inputText !== taskText){) no servía porque nunca cambiabamos el valor de inputText que siempre sería falso.
     task = { text: taskText, isCompleted: false, isFav: false, id: Date.now() }; //creamos un objeto igual al que se generaría de forma random si no rellenaramos el form
   } else {
   task = generateRandomTask(); //esto se meterá en el array taskArray por lo que también habrá que hacer stringify
   }
 
+  //Aquí, la tarea se añade al tasksArray. Esta tarea, incluso si está pendiente, se añade correctamente a la lista.
   if (addToEnd){
     tasksArray.unshift(task); //Se añaden los objetos al final del array en formato json
   } else {
@@ -138,8 +139,6 @@ function addTask(addToEnd, taskText = null){
   
   //guarda el array actualizado en el localStorage
   localStorage.setItem("taskArray", JSON.stringify(tasksArray) ); //se actualiza el valor asociado a la key "taskArray", cada vez se añadirá un nuevo objeto que representa una tarea
-  
-   //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final  */
   
   // Verifica si se debe mostrar según el filtro activo, si el filtro no está activo(false) o la tarea está completada se muestran todas las tareas
   //si el filtro está activo solo se mostrarán las tareas que estén marcadas como completadas
