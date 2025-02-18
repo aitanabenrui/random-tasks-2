@@ -144,12 +144,11 @@ function addTask(addToEnd, taskText = null){
 }
 
 //función que filtra las tareas completadas y las no completadas
-
 const filterCompletedTasks = () =>{
   const taskNode = document.querySelector('#tasks'); //selecciona el contenedor padre de las tareas
   taskNode.innerHTML = ''; //limpia las tareas actuales
 
-  //filtra las tareas completadas o mostrar todas
+  //filtra las tareas completadas o mostrar todas, revisa el estado de la variable filterCompleted y en función de esta filtra o no
   const filteredTasks = filterCompleted 
   ? tasksArray.filter(task => task.isCompleted) //si filterComplted es filteredTasks contendrá solo las tareas completadas
   : tasksArray; //si es false la variable será igual al array origial
