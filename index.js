@@ -1,5 +1,5 @@
 //definición con variables de elementos del DOM
-
+let filterCompleted = false; 
 const formInput = document.querySelector("#form_input");
 let inputText = false;
 const submitButton = document.querySelector("#submit-button");
@@ -119,6 +119,7 @@ function createTaskNode(task, addToEnd){
       })
 }
 
+//función que se encarga de añadirl las tareas al principio o al final del taskArray y luego llama a la función createTaskNode para que la cree en el dom
 function addTask(addToEnd, taskText = null){
 
   let task; //definimos la variable task
@@ -141,6 +142,35 @@ function addTask(addToEnd, taskText = null){
   //Crear y mostrar la nueva tara en la interfaz
   createTaskNode(task, addToEnd); //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final 
 }
+
+//función que filtra las tareas completadas y las no completadas
+
+const filterCompletedTasks = () =>{
+  const taskNode = document.querySelector('#tasks'); //selecciona el contenedor padre de las tareas
+  taskNode.innerHTML = ''; //limpia las tareas actuales
+
+  //filtra las tareas completadas o mostrar todas
+  const filteredTasks = filterCompleted 
+  ? tasksArray.filter(task => task.isCompleted) //si filterComplted es filteredTasks contendrá solo las tareas completadas
+  : tasksArray; //si es false la variable será igual al array origial
+
+  //finalmente renderizamos en el html las tareas filtradas con el nuevo array filterCompletedTasks
+  filteredTasks.forEach((task)=>{ //para cada tarea llama a la función que las crea en el DOM y las añade al principio
+    createTaskNode(task, false);
+  });
+}
+
+//event listener para el botón de filtrar por completadas
+document.querySelector('#completed-filter').addEventListener('click', ()=>{
+  filterCompleted = !filterCompleted; //invierte el valor del filtrado
+
+  //cambia el texto del botón según el estado de filtrado+
+  const filterButton = document.querySelector('#completed-filter');
+  filterButton.innerText = filterCompleted ? 'Show all' : 'Show completed'; 
+
+  //llama a filterCompletdTasks que filtrará las tareas por completadas
+  filterCompletedTasks();
+});
 
 // event listeners para que los botones llamen a las funciones anteriores
 document.querySelector('#regenate').addEventListener('click', () => {
