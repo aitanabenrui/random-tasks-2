@@ -37,17 +37,17 @@ function getRandomArray() {
 // Estas funciones serán las que iremos cambiando con los ejemplos
 //función que regenera el array de tareas random, se activa pulsando el botón de regenerar listado
 function regenerateArray() {
-  const tasks = getRandomArray(); // la variable llama a la función getRandomArray que genera un array de 10 objetos con tareas aleatorias
-  document.querySelector('#tasks').innerHTML = ''; //limpia el contenido del div con id tasks antes de generar las nuevas tareas
-  console.log(tasks);
+  tasksArray = getRandomArray(); // Genera un nuevo array con tareas aleatorias
+  localStorage.setItem("taskArray", JSON.stringify(tasksArray)); // Guarda en localStorage
 
-//  let newTasksHTML = ''; //variable para guardar el html
+  document.querySelector('#tasks').innerHTML = ''; // Limpia el contenedor de tareas en el DOM
 
-//para cada tarea en el array, llama a la función createTaskNode
-  tasks.forEach((task) => { 
-    //newTasksHTML += getTaskHtml(task);
-      createTaskNode(task, true);
-    });
+  // Mostrar solo las tareas según el filtro
+  const filteredTasks = filterCompleted ? tasksArray.filter(task => task.isCompleted) : tasksArray;
+
+  filteredTasks.forEach((task) => {
+    createTaskNode(task, true);
+  });
   }
 
 
@@ -139,8 +139,15 @@ function addTask(addToEnd, taskText = null){
   //guarda el array actualizado en el localStorage
   localStorage.setItem("taskArray", JSON.stringify(tasksArray) ); //se actualiza el valor asociado a la key "taskArray", cada vez se añadirá un nuevo objeto que representa una tarea
   
-  //Crear y mostrar la nueva tara en la interfaz
-  createTaskNode(task, addToEnd); //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final 
+   //cada vez que se apriete el botón add task llamama a createTaskNode, creará una task y añadirá al principio o al final  */
+  
+  // Verifica si se debe mostrar según el filtro activo, si el filtro no está activo(false) o la tarea está completada se muestran todas las tareas
+  //si el filtro está activo solo se mostrarán las tareas que estén marcadas como completadas
+  //Cuando el filtro está activado, solo se crean los nodos de las tareas completadas (task.isCompleted === true). Si la tarea no está completada, la condición del if es false, por lo que no se llama a createTaskNode y esa tarea no se muestra en la interfaz.
+  // la parte que hace que se vuelvan a renderizar todas es la función filterCompletedTasks(), que se ejecuta cuando hacemos clic en el botón de filtrado.
+  if (!filterCompleted || task.isCompleted) {
+    createTaskNode(task, addToEnd);
+  }
 }
 
 //función que filtra las tareas completadas y las no completadas
@@ -150,7 +157,7 @@ const filterCompletedTasks = () =>{
 
   //filtra las tareas completadas o mostrar todas, revisa el estado de la variable filterCompleted y en función de esta filtra o no
   const filteredTasks = filterCompleted 
-  ? tasksArray.filter(task => task.isCompleted) //si filterComplted es filteredTasks contendrá solo las tareas completadas
+  ? tasksArray.filter(task => task.isCompleted) //si filterComplted es true filteredTasks contendrá solo las tareas completadas
   : tasksArray; //si es false la variable será igual al array origial
 
   //finalmente renderizamos en el html las tareas filtradas con el nuevo array filterCompletedTasks
@@ -163,11 +170,27 @@ const filterCompletedTasks = () =>{
 document.querySelector('#completed-filter').addEventListener('click', ()=>{
   filterCompleted = !filterCompleted; //invierte el valor del filtrado
 
+  // Guardar en localStorage el estado del filtro
+  localStorage.setItem("filterCompleted", JSON.stringify(filterCompleted));
+
   //cambia el texto del botón según el estado de filtrado+
   const filterButton = document.querySelector('#completed-filter');
   filterButton.innerText = filterCompleted ? 'Show all' : 'Show completed'; 
 
   //llama a filterCompletdTasks que filtrará las tareas por completadas
+  filterCompletedTasks();
+});
+
+// Al cargar la página, recuperar el estado del filtro desde localStorage
+window.addEventListener('load', () => {
+  // Recupera el estado del filtro y convierte de string a booleano
+  filterCompleted = JSON.parse(localStorage.getItem("filterCompleted")) || false;
+
+  // Cambia el texto del botón según el estado guardado
+  const filterButton = document.querySelector('#completed-filter');
+  filterButton.innerText = filterCompleted ? 'Show all' : 'Show completed';
+
+  // Aplicar el filtro al cargar la página
   filterCompletedTasks();
 });
 
