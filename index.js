@@ -28,7 +28,7 @@ function generateRandomTask() { //genera un objeto con una tarea aleatoria
 //función que genera un array con 10 objetos random que representan tareas random, usa un bucle for para llamar 10 veces a la función getRandomTask
 function getRandomArray() {
   const randomTasks = []; //define un array vacío
-  for (let i = 0; i < 10; i++) { //un bucle de 10 instancias, mete 10 veces en el array randomTasks un objeto con tarea random
+  for (let i = 0; i < 4; i++) { //un bucle de 10 instancias, mete 10 veces en el array randomTasks un objeto con tarea random
     randomTasks.push(generateRandomTask()); 
   }
   return randomTasks; //devuelve el array de objetos
@@ -44,7 +44,11 @@ function regenerateArray() {
   // Mostrar solo las tareas según el valor del filtro almacenado en el local storage
   const filteredTasks = filterCompleted ? tasksArray.filter(task => task.isCompleted) : tasksArray;
 
-  filteredTasks.forEach((task) => {
+  //invertimos el orden del array filteredTasks para que aparezcan y se guarden en el orden correcto al refrescar el navegador
+  //ESTO ES LO QUE ARREGLA EL PROBLEMA DE LA DIFERENCIA DE ORDEN EN EL ARRAY Y EN EL DOM DEL ARRAY REGENERADO
+  const filteredTasksInverted = [...filteredTasks].reverse();
+
+  filteredTasksInverted.forEach((task) => {
     createTaskNode(task, true);
   });
   }
